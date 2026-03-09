@@ -1,0 +1,19 @@
+name: Build TWRP Moto G56
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Build Recovery
+      uses: shelf-nu/twrp-builder@main
+      with:
+        DEVICE_PATH: .
+        DEVICE_NAME: bogota
+        LUNCH_ACTION: twrp_bogota-eng
+        BUILD_TARGET: vendorbootimage
