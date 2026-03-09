@@ -5,15 +5,16 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Build Recovery
-      uses: shelf-nu/twrp-builder@main
+    - name: Recovery Compilation
+      uses: EdySusanto/recovery-builder@main
       with:
-        DEVICE_PATH: .
-        DEVICE_NAME: bogota
-        LUNCH_ACTION: twrp_bogota-eng
-        BUILD_TARGET: vendorbootimage
+        manifest_url: 'https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp'
+        manifest_branch: 'twrp-12.1'
+        device_path: 'bogota'
+        device_name: 'bogota'
+        build_target: 'vendorboot'
