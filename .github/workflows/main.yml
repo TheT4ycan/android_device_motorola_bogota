@@ -10,12 +10,20 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Build Recovery
-      uses: shotgun-p/recovery-builder@main
-      with:
-        MANIFEST_URL: 'https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp'
-        MANIFEST_BRANCH: 'twrp-12.1'
-        DEVICE_PATH: 'bogota'
-        DEVICE_NAME: 'bogota'
-        BUILD_TARGET: 'vendorboot'
+    - name: Setup Toolchain
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential bc python3 photum zip
+
+    - name: Sync & Build
+      run: |
+        # Aqui ele vai baixar o construtor direto para a máquina do GitHub
+        git clone https://github.com/akhilnarang/scripts.git scripts
+        cd scripts && bash setup/android_build_env.sh
+        cd ..
+        
+        # Comandos de build
+        git clone https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 manifest
+        cd manifest
+        # (O resto do processo o GitHub faz direto no terminal)
         
