@@ -30,8 +30,8 @@ jobs:
         repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
         repo sync -j$(nproc --all)
         mkdir -p device/motorola/bogota
-        git clone https://github.com/TheT4ycan/TWRP_for_bogota.git temp_bogota
-        cp -r temp_bogota/* device/motorola/bogota/
+        git clone https://github.com/TheT4ycan/TWRP_for_bogota.git temp_repo
+        cp -r temp_repo/bogota/* device/motorola/bogota/
         source build/envsetup.sh
         lunch omni_bogota-eng || lunch twrp_bogota-eng
         mka vendorbootimage -j$(nproc --all)
