@@ -5,40 +5,41 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Install Tools
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y bc build-essential zip curl python3 git-core gnupg flex bison gperf libxml2-utils xsltproc zlib1g-dev g++-multilib libc6-dev-i386 libncurses-dev x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev
+      - name: Install Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bc build-essential zip curl python3 git-core gnupg flex bison gperf libsdl1.2-dev libesd0-dev libwxgtk3.0-gtk3-dev squashfs-tools build-essential zip zlib1g-dev gcc-multilib g++-multilib x11proto-core-dev libx11-dev libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig
 
-    - name: Install Repo
-      run: |
-        mkdir -p ~/bin
-        curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-        chmod a+x ~/bin/repo
-        sudo ln -sf ~/bin/repo /usr/bin/repo
+      - name: Install Repo
+        run: |
+          mkdir -p ~/bin
+          curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+          chmod a+x ~/bin/repo
+          sudo ln -sf ~/bin/repo /usr/bin/repo
 
-    - name: Sync & Build
-      run: |
-        mkdir work && cd work
-        git config --global user.name "taycan"
-        git config --global user.email "daviitaycanzl02@gmail.com"
-        repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
-        repo sync -j$(nproc --all)
-        mkdir -p device/motorola/bogota
-        git clone https://github.com/TheT4ycan/TWRP_for_bogota.git temp_repo
-        cp -r temp_repo/bogota/* device/motorola/bogota/
-        source build/envsetup.sh
-        lunch omni_bogota-eng || lunch twrp_bogota-eng
-        mka vendor_bootimage -j$(nproc --all)
+      - name: Sync & Build
+        run: |
+          mkdir work && cd work
+          git config --global user.name "taycan"
+          git config --global user.email "daviitaycanzl02@gmail.com"
+          repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git -b twrp-12.1
+          repo sync -j$(nproc --all)
+          
+          mkdir -p device/motorola/bogota
+          git clone https://github.com/TheT4ycan/TWRP_for_bogota.git device/motorola/bogota
+          
+          source build/envsetup.sh
+          lunch twrp_bogota-eng
+          mka vendor_bootimage -j$(nproc --all)
 
-    - name: Upload
-      uses: actions/upload-artifact@v4
-      with:
-        name: TWRP-G56
-        path: work/out/target/product/bogota/*.img
-        
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: TWRP-MotoG56-Final
+          path: work/out/target/product/bogota/*.img
+          
