@@ -10,12 +10,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Recovery Compilation
-      uses: T999-Dev/recovery-builder@main
+    - name: Build Recovery
+      uses: shotgun-p/recovery-builder@main
       with:
-        manifest_url: 'https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp'
-        manifest_branch: 'twrp-12.1'
-        device_path: 'bogota'
-        device_name: 'bogota'
-        build_target: 'vendorboot'
+        MANIFEST_URL: 'https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp'
+        MANIFEST_BRANCH: 'twrp-12.1'
+        DEVICE_PATH: 'bogota'
+        DEVICE_NAME: 'bogota'
+        BUILD_TARGET: 'vendorboot'
         
