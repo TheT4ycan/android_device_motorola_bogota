@@ -41,7 +41,7 @@ jobs:
           cd work
           source build/envsetup.sh
           lunch twrp_bogota-eng
-          mka vendor_bootimage -j$(nproc --all)
+          mka vendor_boot -j$(nproc --all)
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
